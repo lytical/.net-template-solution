@@ -1,6 +1,4 @@
-using Lyt.Host.Endpoint;
 using Lyt.Host.Model;
-using Lyt.Host.Service;
 using System.Net;
 using System.Text.Json.Serialization;
 
@@ -11,9 +9,10 @@ builder.Services
   .AddEndpointsApiExplorer()
   .AddSwaggerGen()
   .AddHttpClient()
-  .ConfigureHttpJsonOptions(opt => opt.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)
-  .AddLytServices(builder.Configuration)
-  ;
+  .ConfigureHttpJsonOptions(opt => opt.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull);
+
+#region add services
+#endregion  
 
 var app = builder.Build();
 
@@ -38,7 +37,7 @@ app
     catch (TaskCanceledException) { }
     catch (Exception ex)
     {
-      if(!ctx.Response.HasStarted)
+      if (!ctx.Response.HasStarted)
       {
         ctx.Response.StatusCode = (int)(ex is ArgumentException aex ? HttpStatusCode.BadRequest : HttpStatusCode.InternalServerError);
         await ctx.Response.WriteAsJsonAsync(new ApiReponse(
@@ -51,7 +50,9 @@ app
         ), ctx.RequestAborted);
       }
     }
-  })
-  .UseTemplateEndpoint();
+  });
+
+#region add services
+#endregion  
 
 app.Run();

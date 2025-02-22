@@ -55,3 +55,4 @@ obj/
 *.dbmdl
 *.jfm
 *.*proj.user
+**.user
